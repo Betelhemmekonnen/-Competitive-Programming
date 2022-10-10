@@ -1,0 +1,39 @@
+class Solution {
+    public int calculate(String s) {
+       int sum=0;
+        int tempsum=0;
+        char lastsign='+';
+        int num=0;
+        for(int i=0 ; i<s.length(); i++){
+             char c = s.charAt(i);
+            if(Character.isDigit(c)){
+                num = 10 * num + (c-'0');
+            }
+            if(i==s.length() -1 || !Character.isDigit(c) && c!= ' '){
+                switch(lastsign){
+                  case'+' :
+                        sum += tempsum;
+                        tempsum=num;
+                        break;
+                  case'-' :
+                        sum += tempsum;
+                        tempsum =- num;
+                        break;
+                  case'*' :
+                
+                        tempsum *= num;
+                        break;
+                  case'/' :
+                        
+                        tempsum /=num;
+                        break;
+            } 
+            num= 0;
+            lastsign = c;
+        }
+           
+    }
+    sum +=tempsum;
+    return sum;
+}
+}
