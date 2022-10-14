@@ -1,30 +1,43 @@
-class Solution {
-public:
-    int shortestSubarray(vector<int>& nums, int k) {
-        int n=nums.size();
-        deque<pair<int,int>> dq;//index,sum
-        long long sum = 0;
-        long long shortest = INT_MAX;
+	public int shortestSubarray(int[] A, int K) {
+        int n = A.length;
+        int[] prefixSum = new int[n];
         
-        for(long long i=0;i<n;++i){
-            sum += nums[i];
-            if(sum>=k)  shortest = min(shortest,i+1);//Sum from start to i-th index
-            
-            //Reduce window size to find minimum window with sum>=k
-            pair<long long,long long> curr = {INT_MIN,INT_MIN};
-            while(!dq.empty() and (sum-dq.front().second >= k)){
-                curr = dq.front();
-                dq.pop_front();
-            }
-            //Calculate new shortest (if possible)
-            if(curr.second!=INT_MIN)
-                shortest = min(shortest,(i-curr.first));
-            
-            //Maintain monotonically non-decreasing order of deque
-            while(!dq.empty() and sum<=dq.back().second)
-                dq.pop_back();
-            dq.push_back({i,sum});//Push i-th sum
+        prefixSum[0] = A[0];
+        for(int i=1;i<n;i++) {
+            prefixSum[i] = prefixSum[i-1]+A[i];
         }
-        return shortest==INT_MAX?-1:shortest;
+
+        ArrayDeque<Integer> q = new ArrayDeque<>(); //Doubly ended queue in Java.
+        
+        int ans = -1;
+        
+        for(int i=0;i<n;i++) {
+            if(prefixSum[i]>=K) {
+                if(ans==-1) {
+                    ans = i+1;
+                }
+                else {
+                    ans = Math.min(ans, i+1);
+                }
+            }
+            
+            int ysum = prefixSum[i];
+            int xsum = ysum-K;
+            
+            while(!q.isEmpty() && prefixSum[q.getFirst()]<=xsum) {
+                if(ans==-1) {
+                    ans = i-q.pollFirst();
+                }
+                else {
+                    ans  = Math.min(ans, i-q.pollFirst());
+                }
+            }
+            
+            while(!q.isEmpty() && prefixSum[q.getLast()]>=prefixSum[i]) {
+                q.pollLast();
+            }
+            q.addLast(i);
+        }
+        
+        return ans;
     }
-};
