@@ -1,0 +1,62 @@
+class MyCircularDeque {
+public:
+    deque<int>dq;
+    int cap;
+    MyCircularDeque(int k) {
+        cap=k;
+    }
+    
+    bool insertFront(int value) {
+        if(dq.size()<cap){
+            dq.push_front(value);
+            return true;
+        }
+        return false;
+    }
+    
+    bool insertLast(int value) {
+        if(dq.size()<cap){
+            dq.push_back(value);
+            return true;
+        }
+        return false;
+    }
+    
+    bool deleteFront() {
+        if(dq.size()){
+            dq.pop_front();
+            return true;
+        }
+        return false;
+    }
+    
+    bool deleteLast() {
+        if(dq.size()){
+            dq.pop_back();
+            return true;
+        }
+        return false;
+    }
+    
+    int getFront() {
+        if(dq.size()){
+            return dq.front();
+        }
+        return -1;
+    }
+    
+    int getRear() {
+        if(dq.size()){
+            return dq.back();
+        }
+        return -1;
+    }
+    
+    bool isEmpty() {
+        return (dq.size()==0);
+    }
+    
+    bool isFull() {
+        return (dq.size()==cap);
+    }
+};
