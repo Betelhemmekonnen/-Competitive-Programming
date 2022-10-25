@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int fun(vector<vector<int>>&dp,vector<int>& nums,int s,int e){
+        if(s==e) return nums[s];
+        if(dp[s][e]!=-1) return dp[s][e];
+        int a = nums[s] - fun(dp,nums,s+1,e);
+        int b = nums[e] - fun(dp,nums,s,e-1);
+        dp[s][e] = max(a,b);
+        return max(a,b);
+    }
+    bool PredictTheWinner(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>>dp(n,vector<int>(n,-1));
+        return fun(dp,nums,0,n-1)>=0;   
+    }
+};
